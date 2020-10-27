@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -23,10 +22,10 @@ import java.util.List;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class MainActivity extends AppCompatActivity
+public class PrintActivity extends AppCompatActivity
         implements EasyPermissions.PermissionCallbacks, BluetoothHandler.HandlerInterface{
 
-    private final String TAG = MainActivity.class.getSimpleName();
+    private final String TAG = PrintActivity.class.getSimpleName();
     public static final int RC_BLUETOOTH = 0;
     public static final int RC_CONNECT_DEVICE = 1;
     public static final int RC_ENABLE_BLUETOOTH = 2;
@@ -37,7 +36,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_print);
         setupView();
         setupListener();
         setupBluetooth();
@@ -125,7 +124,7 @@ public class MainActivity extends AppCompatActivity
                 }
                 if (isPrinterReady) {
                     if (editPrint.getText().toString().isEmpty()) {
-                        Toast.makeText(MainActivity.this, "Cant print null text", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PrintActivity.this, "Cant print null text", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     mService.write(PrinterCommands.ESC_ALIGN_CENTER);
@@ -133,7 +132,7 @@ public class MainActivity extends AppCompatActivity
                     mService.write(PrinterCommands.ESC_ENTER);
                 } else {
                     if (mService.isBTopen())
-                        startActivityForResult(new Intent(MainActivity.this, DeviceActivity.class), RC_CONNECT_DEVICE);
+                        startActivityForResult(new Intent(PrintActivity.this, DeviceActivity.class), RC_CONNECT_DEVICE);
                     else
                         requestBluetooth();
                 }
